@@ -7,6 +7,34 @@ structured review: bugs, security issues, style issues, and suggestions.
 pasted code) and returns a structured report. Does not post comments,
 open PRs, or touch any repo.
 
+## Architecture
+
+```
+Code file / diff (local)
+        │
+        ▼
+┌───────────────────────────────┐
+│      reviewer.py              │
+│                               │
+│  build_prompt(code, filename) │
+│        │                      │
+│        ▼                      │
+│  LLM (OpenAI-compatible API)  │
+│  Groq · OpenAI · Ollama       │
+│        │                      │
+│  parse_review_response()      │
+│   ├── summary                 │
+│   ├── bugs          []        │
+│   ├── security_issues []      │
+│   ├── style_issues   []       │
+│   └── suggestions    []       │
+└───────────────────────────────┘
+        │
+        ▼
+  Streamlit UI        Markdown report
+  (interactive)       (downloadable)
+```
+
 ## Features
 
 - Provider-agnostic LLM client (OpenAI-compatible API: Groq, OpenAI, etc.)
